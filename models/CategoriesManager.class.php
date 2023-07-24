@@ -21,6 +21,7 @@ public function DisplayCategories(){
     return $results;
 }
 
+
 /*  public function getAllCategories() {
        $results=array();
 
@@ -56,23 +57,53 @@ public function DisplayCategories(){
      return $newCategory;
     }
 
-    public function addCategorie($nom_categorie, $description) {
+    public function addCategorie($id, $nom_categorie, $description) {
 
-        $req = $this->getDatabase()->prepare('INSERT INTO categories (nom_categorie, description) 
-        VALUES (:nom_categorie, :description)');
-        $req->execute([':nom_categorie' => $nom_categorie, ':description'  => $description]);
+        $req = $this->getDatabase()->prepare('INSERT INTO categories (id, nom_categorie, description) 
+        VALUES (:id, :nom_categorie, :description)');
+        $req->execute([':id' => $id, ':nom_categorie' => $nom_categorie, ':description'  => $description]); //variable $id $nom_categorie dans le controller
+        $id=$this->getDatabase()->lastInsertId();
+        if ($req->rowCount()) {
+            echo 'cat ajoutée';
+                       /*  $type = 'success';
+                        $message = ['Catégorie ajoutée'];  */
+        } else { 
+            echo 'cat pas ajouté';
+                         /* $type = 'error';
+                        $message = ['Catégorie non ajoutée']; */
+        }
+        
+        $category = $req->fetch(PDO::FETCH_ASSOC);
+         $req->closeCursor();
+
+             $newCategory = new Category( //pour accéder au getId getName etc pour afficher
+                $category['id'],
+                $category['nom_categorie'],
+                $category['description']
+            );
+         
+     return $newCategory;
     }
 
-    public function setCategorie($nom_categorie, $description) {
+    public function setCategorie($id, $nom_categorie, $description) {
 
         $req = $this->getDatabase()->prepare('UPDATE categories 
         SET nom_categorie=:nom_categorie, 
         description=:description WHERE id=:id');
-        $req->execute([':nom_categorie' => $nom_categorie, ':description'  => $description]);
+        $req->execute([':nom_categorie' => $nom_categorie, ':description'  => $description, ':id' => $id]);
+        $category = $req->fetch(PDO::FETCH_ASSOC);
+        $req->closeCursor();
+
+            $newCategory = new Category(
+                $category['id'],
+                $category['nom_categorie'],
+                $category['description']
+            );
+         
+     return $newCategory;
     }
 
     public function delCategorie($id) {
-        $req = $this->getDatabase()->prepare('DELETE FROM categories WHERE id=:id');
-        $req->execute([':id' => $id]);
+        $category = $this->delById($id);
     }
 }  

@@ -14,12 +14,6 @@ class AnnoncementsController
         
     }
  
-    /* public function get_games_by_year($year)
-    {
-        $games = $this->gameManager->get_all_games_by_year($year) ;
-            require_once "views/games.php" ;
-    } */
-    
   /*   public function homePage(){
         $annClass = new Annoncement($table);
         $this->table = $table;
@@ -39,18 +33,5 @@ class AnnoncementsController
         var_dump($annonces);    
     } */
 
-
-   /* public function get_games_by_platform($id_platform)
-    {
-        $games = $this->gameManager->get_all_games_by_platform($id_platform) ;
-            require_once "views/games.php" ;
-    }
-
-    public function get_game($id)
-    {
-        $game = $this->gameManager->get_game($id) ;
-            $games = array($game);
-            require_once "views/games.php" ;
-    }  */
     
 }

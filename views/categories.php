@@ -21,7 +21,7 @@
                                 <td><?= $categorie->getDescription() ?></td>
                                 <td>
                                     <a class='btn btn-primary' href='<?= URL ?>categorie/<?= $categorie->getId() ?>' role='button'>Modifier</a>
-                                    <a class='btn btn-danger' href='<?= URL ?>categorie/<?= $categorie->getId() ?>' role='button'>Supprimer</a>
+                                    <a class='btn btn-danger' href='<?= URL ?>categorieDel/<?= $categorie->getId() ?>' role='button'>Supprimer</a>
                                 </td>
                             </tr>
                             <td>

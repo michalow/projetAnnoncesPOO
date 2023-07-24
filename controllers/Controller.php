@@ -1,5 +1,5 @@
 <?php
-// tous les managers qui utilise ce controller
+
 require_once ROOT_DIR."/models/CategoriesManager.class.php";
 require_once ROOT_DIR."/models/EtatsManager.php";
 
@@ -31,57 +31,43 @@ class Controller
             include "views/categoriesForm.php" ;
     }     
     
-    public function postCategorie($id, $nom, $description){
-        if (!empty($_POST)) {
-            $id = $_POST['id'] ?? '';
-            var_dump($id);
-            $nom = $_POST['nom'] ?? '';
-            $description = $_POST['description'] ?? '';
-            if (!empty($_POST['id'])) {
-                $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    public function postCategorie($input){
+        if (!empty($input)) {
+            $id = $input['id'] ?? '';
+            $nom_categorie = $input['nom'] ?? '';
+            $description = $input['description'] ?? '';
+            if (empty($input['id'])) {
                 try {
-                    $categorie = $this->managerCategories->setCategorie($nom, $description, $id);
-                    var_dump($categorie);
-                    include "views/categoriesForm.php" ;
-                    /* if($categorie->rowCount()) {
-                        echo 'cat ajoutée';
-                        /* $type = 'success';
-                        $message = ['Catégorie mis à jour']; 
-                    }else{
-                        echo 'cat non ajoutée';
-                        /* $type = 'error';
-                        $message = ['Catégorie non mis à jour'];
-                    } */
-                } catch (Exception $e) {
-                    $type = 'error';
-                    $message = ['Catégorie non mis à jour: ' . $e->getMessage()];
-                }
-                
-            } else {
-                try {
-                    $categorie = $this->managerCategories->addCategorie($nom, $description);
-                    include "views/categoriesForm.php" ;
-                   /*  if ($categorie->rowCount()) {
-                        echo 'cat ajoutée'; */
-                       /*  $type = 'success';
-                        $message = ['Catégorie ajoutée'];  */
-                    /* } else { */
-                       /*  echo 'cat pas ajouté'; */
-                         /* $type = 'error';
-                        $message = ['Catégorie non ajoutée']; */
-                    /* }  */
+                    $categorie = $this->managerCategories->addCategorie($id,$nom_categorie, $description);
+                    include "views/categories.php" ;
                 } catch (Exception $e) {
                     $type = 'error';
                     $message = 'Exception message: ' . $e->getMessage();
                 }
+            } else {
+                $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+                try {
+                    $categorie = $this->managerCategories->setCategorie($id, $nom_categorie, $description);
+                    var_dump($categorie);
+                    include "views/categoriesForm.php" ;
+                } catch (Exception $e) {
+                    $type = 'error';
+                    $message = ['Catégorie non mis à jour: ' . $e->getMessage()];
+                }
             }
 
-    $createCatStmt = null;
+    /* $createCatStmt = null;
     $updateCatStmt = null;
-    $db = null;
+    $db = null; */
     }
 }
 
+    public function deleteCategorie() {
+        $id = $_GET['id']; 
+        $categorie = $this->managerCategories->delCategorie($id);
+        /* echo "Categorie a été supprimée"; */
+            include "views/categories.php";
+    }
 
     public function allStates()
     {

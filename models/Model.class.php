@@ -55,7 +55,8 @@ class Model
     public function delById($id){
         $req = $this->getDatabase()->prepare('DELETE * FROM '.$this->table . ' WHERE id=' . $id);
         $req->execute();
-        return $req->fetch(PDO::FETCH_ASSOC);
+        $del = $req->rowCount();
+        var_dump($del);
     }
    
 }
